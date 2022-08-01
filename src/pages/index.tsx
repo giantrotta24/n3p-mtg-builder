@@ -13,10 +13,14 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="container mx-auto flex flex-col items-center justify-center h-screen p-4">
-        <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold">
-          Hello World
-        </h1>
+      <main className="container mx-auto h-screen w-screen border border-red-500">
+        <div className="flex flex-col p-4">
+          <button className="bg-sky-600 px-10 py-2 self-start hover:bg-sky-700 focus:outline-none focus:ring focus:ring-sky-300">
+            add deck
+          </button>
+          <div className="p-2" />
+          <div className="border border-red-500">decks</div>
+        </div>
       </main>
     </>
   );
