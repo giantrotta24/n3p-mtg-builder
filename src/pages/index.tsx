@@ -3,6 +3,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 
 import Deck from '../components/Deck';
+import { trpc } from '../utils/trpc';
 
 const sampleData = [
   {
@@ -21,6 +22,12 @@ export interface DeckType {
 type Decks = DeckType[];
 
 const Home: NextPage = () => {
+  const decksRespponse = trpc.useQuery(['deck.getAll']);
+  console.log(
+    '🚀 ~ file: index.tsx ~ line 26 ~ decksRespponse',
+    decksRespponse
+  );
+
   const [decks, setDecks] = useState<Decks>(sampleData);
 
   const addDeck = () => {
