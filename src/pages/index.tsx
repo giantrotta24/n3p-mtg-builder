@@ -7,26 +7,30 @@ import Deck from '../components/Deck';
 const sampleData = [
   {
     id: 1,
-    name: 'タイトル1',
-    description: '🤪🤪🤪🤪',
+    name: '🤪🤪🤪🤪',
+    description: 'タイトル1',
   },
 ];
 
-export interface Deck {
+export interface DeckType {
   id: number;
   name: string;
   description: string;
 }
 
-type Decks = Deck[];
+type Decks = DeckType[];
 
 const Home: NextPage = () => {
-  const [decks, setDecks] = useState<Decks>([]);
+  const [decks, setDecks] = useState<Decks>(sampleData);
 
-  const addDeck = (deck: Deck | undefined) => {
-    if (deck) {
-      setDecks([...decks, deck]);
-    }
+  const addDeck = () => {
+    const blankDeck = {
+      id: decks.length + 1,
+      name: '',
+      description: '',
+    };
+
+    setDecks([...decks, blankDeck]);
   };
 
   return (
@@ -43,7 +47,7 @@ const Home: NextPage = () => {
       <main className="container mx-auto min-h-screen h-auto w-screen border border-red-500">
         <div className="flex flex-col p-4">
           <button
-            onClick={() => addDeck(sampleData[0])}
+            onClick={() => addDeck()}
             className="bg-sky-600 px-10 py-2 self-start hover:bg-sky-700 focus:outline-none focus:ring focus:ring-sky-300"
           >
             add deck
