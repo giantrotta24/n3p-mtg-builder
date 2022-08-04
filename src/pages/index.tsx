@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
-import Deck from '../components/Deck';
 import { trpc } from '../utils/trpc';
+
+import Deck from '../components/Deck';
 
 export interface DeckType {
   id: string;
@@ -19,10 +19,12 @@ const Home: NextPage = () => {
   const { data, error, isLoading, isError, refetch } = trpc.useQuery([
     'deck.getAll',
   ]);
+
   const createBlankDeck = trpc.useMutation(['deck.createBlankDeck'], {
     onSuccess: () => {
       refetch();
     },
+    // handle error
   });
 
   if (isLoading) return <div>Loading...</div>;

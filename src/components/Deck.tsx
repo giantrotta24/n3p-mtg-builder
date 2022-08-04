@@ -6,7 +6,7 @@ import React from 'react';
 type DeckInputProps = { id: string; name: string; description: string | null };
 
 const Deck = ({ id, name, description }: DeckInputProps) => {
-  const { value, bind, reset } = useInput(name || '');
+  const { bind, reset } = useInput(name || '');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
