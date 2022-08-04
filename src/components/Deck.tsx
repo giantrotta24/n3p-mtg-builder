@@ -3,9 +3,7 @@ import { DeckType } from '../pages/index';
 import { useInput } from '../hooks/useInput';
 import React from 'react';
 
-interface DeckInputProps extends DeckType {
-  // setName: (name: string) => void;
-}
+type DeckInputProps = { id: string; name: string; description: string | null };
 
 const Deck = ({ id, name, description }: DeckInputProps) => {
   const { value, bind, reset } = useInput(name || '');

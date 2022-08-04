@@ -5,39 +5,32 @@ import Head from 'next/head';
 import Deck from '../components/Deck';
 import { trpc } from '../utils/trpc';
 
-const sampleData = [
-  {
-    id: 1,
-    name: '🤪🤪🤪🤪',
-    description: 'タイトル1',
-  },
-];
-
 export interface DeckType {
-  id: number;
+  id: string;
   name: string;
-  description: string;
+  description: string | null;
+  notes: string;
+  lists: [];
+  colors: string;
+  price: number;
 }
 
-type Decks = DeckType[];
-
 const Home: NextPage = () => {
-  const decksRespponse = trpc.useQuery(['deck.getAll']);
-  console.log(
-    '🚀 ~ file: index.tsx ~ line 26 ~ decksRespponse',
-    decksRespponse
-  );
+  const { data, error, isLoading, isError, refetch } = trpc.useQuery([
+    'deck.getAll',
+  ]);
+  const createBlankDeck = trpc.useMutation(['deck.createBlankDeck'], {
+    onSuccess: () => {
+      refetch();
+    },
+  });
 
-  const [decks, setDecks] = useState<Decks>(sampleData);
+  if (isLoading) return <div>Loading...</div>;
+
+  if (isError) return <div>Error! {error.message} 🥴</div>;
 
   const addDeck = () => {
-    const blankDeck = {
-      id: decks.length + 1,
-      name: '',
-      description: '',
-    };
-
-    setDecks([...decks, blankDeck]);
+    createBlankDeck.mutate();
   };
 
   return (
@@ -54,23 +47,26 @@ const Home: NextPage = () => {
       <main className="container mx-auto min-h-screen h-auto w-screen border border-red-500">
         <div className="flex flex-col p-4">
           <button
-            onClick={() => addDeck()}
+            onClick={addDeck}
             className="bg-sky-600 px-10 py-2 self-start hover:bg-sky-700 focus:outline-none focus:ring focus:ring-sky-300"
           >
             add deck
           </button>
           <div className="p-4" />
-          {decks.length > 0 && (
-            <ul className="flex flex-col gap-3">
-              {decks.map((deck) => (
-                <Deck
-                  key={deck.name}
-                  id={deck.id}
-                  name={deck.name}
-                  description={deck.description}
-                />
-              ))}
-            </ul>
+          {data && data?.length > 0 && (
+            <>
+              {createBlankDeck.isLoading && <div>Loading...</div>}
+              <ul className="flex flex-col gap-3">
+                {data.map((deck) => (
+                  <Deck
+                    key={deck.id}
+                    id={deck.id}
+                    name={deck.name}
+                    description={deck.description}
+                  />
+                ))}
+              </ul>
+            </>
           )}
         </div>
       </main>

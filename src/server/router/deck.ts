@@ -7,16 +7,11 @@ export const deckRouter = createRouter()
       return await ctx.prisma.deck.findMany();
     },
   })
-  .mutation('create-deck', {
-    input: z.object({
-      name: z.string(),
-      description: z.string(),
-    }),
-    async resolve({ ctx, input }) {
+  .mutation('createBlankDeck', {
+    async resolve({ ctx }) {
       return await ctx.prisma.deck.create({
         data: {
-          name: input.name,
-          description: input.description,
+          name: 'Untitled Deck',
         },
       });
     },

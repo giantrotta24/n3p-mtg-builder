@@ -3,12 +3,28 @@
 
 generator client {
     provider = "prisma-client-js"
+    previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
     provider = "mysql"
     url      = env("DATABASE_URL")
-    shadowDatabaseUrl      = env("SHADOW_URL")
+    referentialIntegrity = "prisma"
+}
+
+// a deck contains lists of cards
+model List {
+    id String @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    deleted DateTime?
+
+    main Boolean @default(true)
+    cards Card[]
+
+    // relational fields (do not exist in the DB)
+    deck Deck @relation(fields: [deckId], references: [id])
+    deckId String
 }
 
 model Deck {
@@ -19,5 +35,22 @@ model Deck {
 
     name String
     description String? 
+    notes String?
+    lists List[]
+    colors String?
+    price Int @default(0)
+}
+
+model Card {
+    id String @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name String
+    legendary Boolean @default(false)
+
+    // relational fields (do not exist in the DB)
+    list List @relation(fields: [listId], references: [id])
+    listId String
 }
 
