@@ -15,10 +15,14 @@ export interface DeckType {
   price: number;
 }
 
+let count = 0;
+
 const Home: NextPage = () => {
-  const { data, error, isLoading, isError, refetch } = trpc.useQuery([
-    'deck.getAll',
-  ]);
+  const { data, error, isLoading, isError, refetch } = trpc.useQuery(
+    ['deck.getAll'],
+    // https://tanstack.com/query/v4/docs/guides/important-defaults
+    { refetchOnWindowFocus: false } // react-query will refetch on window focus but we don't want that here
+  );
 
   const createBlankDeck = trpc.useMutation(['deck.createBlankDeck'], {
     onSuccess: () => {
@@ -54,6 +58,7 @@ const Home: NextPage = () => {
           >
             add deck
           </button>
+          <div>Render: {count++}</div>
           <div className="p-4" />
           {data && data?.length > 0 && (
             <>

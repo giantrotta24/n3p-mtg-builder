@@ -1,4 +1,4 @@
-import { DeckType } from '../pages/index';
+import { useState } from 'react';
 
 import { useInput } from '../hooks/useInput';
 import React from 'react';
