@@ -31,9 +31,18 @@ const Home: NextPage = () => {
     // handle error
   });
 
+  const updateDeck = trpc.useMutation(['deck.updateDeck'], {
+    onSuccess: () => {
+      refetch();
+    },
+    // handle error
+  });
+
   if (isLoading) return <div>Loading...</div>;
 
   if (isError) return <div>Error! {error.message} 🥴</div>;
+
+  const isLoadingButtons = updateDeck.isLoading || createBlankDeck.isLoading;
 
   const addDeck = () => {
     createBlankDeck.mutate();
@@ -54,9 +63,10 @@ const Home: NextPage = () => {
         <div className="flex flex-col p-4">
           <button
             onClick={addDeck}
-            className="bg-sky-600 px-10 py-2 self-start hover:bg-sky-700 focus:outline-none focus:ring focus:ring-sky-300"
+            className="bg-sky-600 px-10 py-2 self-start hover:bg-sky-700 focus:outline-none focus:ring focus:ring-sky-300 disabled:bg-gray-400"
+            disabled={isLoading || isLoadingButtons}
           >
-            add deck
+            Add deck
           </button>
           <div>Render: {count++}</div>
           <div className="p-4" />
@@ -69,7 +79,8 @@ const Home: NextPage = () => {
                     key={deck.id}
                     id={deck.id}
                     name={deck.name}
-                    description={deck.description}
+                    updateDeck={updateDeck}
+                    isLoading={isLoadingButtons}
                   />
                 ))}
               </ul>
