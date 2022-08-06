@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { PencilAltIcon, TrashIcon, SaveIcon } from '@heroicons/react/solid';
 
+import { trpc } from '../utils/trpc';
 import { useInput } from '../hooks/useInput';
 
-import { trpc } from '../utils/trpc';
+import Loading from './common/Loading';
 
 type DeckInputProps = {
   id: string;
@@ -48,31 +49,7 @@ const Deck: React.FC<DeckInputProps> = ({ id, name, refetchDecks }) => {
     <li className="p-4 border border-blue-200 bg-slate-800 shadow rounded-md">
       <div className="p-2 flex justify-between">
         {!isEditing ? (
-          <div className="p-1.5">
-            {isLoading ? (
-              <svg
-                className="animate-spin h-6 w-5 text-sky-300"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-75"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  fill="none"
-                  stroke="#23b6f5"
-                  strokeWidth="2"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                />
-              </svg>
-            ) : (
-              name
-            )}
-          </div>
+          <div className="p-1.5">{isLoading ? <Loading /> : name}</div>
         ) : (
           <input
             {...bind}
@@ -83,7 +60,7 @@ const Deck: React.FC<DeckInputProps> = ({ id, name, refetchDecks }) => {
               }
             }}
             type="text"
-            className="focus:ring-indigo-500 focus:border-indigo-500 block  p-2 pr-12 sm:text-sm text-gray-700 border-gray-300 rounded-md disabled:opacity-75"
+            className="focus:ring-indigo-500 focus:border-indigo-500 block p-2 sm:text-sm md:pr-12 text-gray-700 border-gray-300 rounded-md disabled:opacity-75"
           />
         )}
         <div className="flex gap-x-6 md:gap-x-12">

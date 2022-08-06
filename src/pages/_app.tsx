@@ -5,8 +5,14 @@ import type { AppType } from 'next/dist/shared/lib/utils';
 import superjson from 'superjson';
 import '../styles/globals.css';
 
+import Layout from '../components/common/Layout';
+
 const MyApp: AppType = ({ Component, pageProps }) => {
-  return <Component {...pageProps} />;
+  return (
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
+  );
 };
 
 const getBaseUrl = () => {

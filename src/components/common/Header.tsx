@@ -3,7 +3,7 @@ import { Popover, Transition } from '@headlessui/react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 
-export default function Header() {
+const Header: React.FC = () => {
   return (
     <Popover className="relative bg-violet-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -72,4 +72,6 @@ export default function Header() {
       </Transition>
     </Popover>
   );
-}
+};
+
+export default Header;
