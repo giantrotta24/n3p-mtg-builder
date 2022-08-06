@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { trpc } from '../utils/trpc';
 
 import Deck from '../components/Deck';
+import Header from '../components/common/Header';
 
 export interface DeckType {
   id: string;
@@ -50,6 +51,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Header />
       <main className="container mx-auto min-h-screen h-auto w-screen">
         <div className="flex flex-col p-4">
           <button
