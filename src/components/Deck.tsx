@@ -2,42 +2,56 @@ import { useState } from 'react';
 import { PencilAltIcon, TrashIcon, SaveIcon } from '@heroicons/react/solid';
 
 import { useInput } from '../hooks/useInput';
-import { inferMutationOutput } from '../utils/trpc';
+
+import { trpc } from '../utils/trpc';
 
 type DeckInputProps = {
   id: string;
   name: string;
-  updateDeck: any; // how to type this?
-  deleteDeck: any; // how to type this?
-  isLoading: boolean;
+  refetchDecks: () => void;
 };
 
-const Deck = (props: DeckInputProps) => {
-  const { id, name, updateDeck, deleteDeck, isLoading } = props;
+const Deck: React.FC<DeckInputProps> = ({ id, name, refetchDecks }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const { value, bind, reset } = useInput(name || '');
+  const { value, bind } = useInput(name || '');
 
   const handleEdit = () => {
     setIsEditing(true);
   };
+
+  const updateDeck = trpc.useMutation(['deck.updateDeck'], {
+    onSuccess: () => {
+      refetchDecks();
+    },
+    // handle error
+  });
 
   const handleSave = () => {
     updateDeck.mutate({ id, name: value });
     setIsEditing(false);
   };
 
+  const deleteDeck = trpc.useMutation(['deck.deleteDeck'], {
+    onSuccess: () => {
+      refetchDecks();
+    },
+    // handle error
+  });
+
   const handleDelete = () => {
     deleteDeck.mutate({ id });
   };
 
+  const isLoading = updateDeck.isLoading || deleteDeck.isLoading;
+
   return (
-    <li className="p-4 border border-red-500">
+    <li className="p-4 border border-blue-200 bg-slate-800 shadow rounded-md">
       <div className="p-2 flex justify-between">
         {!isEditing ? (
           <div className="p-1.5">
             {isLoading ? (
               <svg
-                className="animate-spin h-5 w-5 text-sky-300"
+                className="animate-spin h-6 w-5 text-sky-300"
                 viewBox="0 0 24 24"
               >
                 <circle
