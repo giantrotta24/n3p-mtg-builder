@@ -38,11 +38,19 @@ const Home: NextPage = () => {
     // handle error
   });
 
+  const deleteDeck = trpc.useMutation(['deck.deleteDeck'], {
+    onSuccess: () => {
+      refetch();
+    },
+    // handle error
+  });
+
   if (isLoading) return <div>Loading...</div>;
 
   if (isError) return <div>Error! {error.message} 🥴</div>;
 
-  const isLoadingButtons = updateDeck.isLoading || createBlankDeck.isLoading;
+  const isLoadingButtons =
+    updateDeck.isLoading || createBlankDeck.isLoading || deleteDeck.isLoading;
 
   const addDeck = () => {
     createBlankDeck.mutate();
@@ -80,6 +88,7 @@ const Home: NextPage = () => {
                     id={deck.id}
                     name={deck.name}
                     updateDeck={updateDeck}
+                    deleteDeck={deleteDeck}
                     isLoading={isLoadingButtons}
                   />
                 ))}
