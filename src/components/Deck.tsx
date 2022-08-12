@@ -54,7 +54,7 @@ const Deck: React.FC<DeckInputProps> = ({ id, name, refetchDecks }) => {
           <input
             {...bind}
             disabled={isLoading}
-            onKeyDown={(e) => {
+            onKeyDown={e => {
               if (e.key === 'Enter') {
                 handleSave();
               }

@@ -44,7 +44,7 @@ const Home: NextPage = () => {
       <div className="p-4" />
       {data && data?.length > 0 && (
         <ul className="flex flex-col gap-3">
-          {data.map((deck) => (
+          {data.map(deck => (
             <Deck
               key={deck.id}
               id={deck.id}
